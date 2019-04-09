@@ -7,6 +7,17 @@
             </el-breadcrumb>
         </div>
         <div class="container">
+            <el-upload
+                class="upload-demo"
+                action="/api/fileUpload"
+                :before-upload="beforeUpload"
+                :file-list="fileList"
+                multiple
+                list-type="picture">
+                <el-button size="small" type="primary">点击上传</el-button>
+                <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
+            </el-upload>
+
             <div class="content-title">支持拖拽</div>
             <div class="plugins-tips">
                 Element UI自带上传组件。
@@ -50,7 +61,7 @@
         name: 'upload',
         data: function(){
             return {
-                defaultSrc: require('../../assets/img/img.jpg'),
+                defaultSrc: require('../../assets/img/132.jpg'),
                 fileList: [],
                 imgSrc: '',
                 cropImg: '',
@@ -89,6 +100,27 @@
                     title: '上传失败',
                     message: '图片上传接口上传失败，可更改为自己的服务器接口'
                 });
+            },
+            beforeUpload(file) {
+                const isJPG = file.type === 'image/jpeg';
+                const isGIF = file.type === 'image/gif';
+                const isPNG = file.type === 'image/png';
+                const isBMP = file.type === 'image/bmp';
+                const isLt2M = file.size / 1024 / 1024 < 10;
+
+                if (!isJPG && !isGIF && !isPNG && !isBMP) {
+                    this.$message({
+                        message: '上传图片必须是JPG/GIF/PNG/BMP 格式!',
+                        type: 'warning'
+                    });
+                }
+                if (!isLt2M) {
+                     this.$message({
+                        message: '上传图片大小不能超过 10MB!',
+                        type: 'warning'
+                    });
+                }
+                return (isJPG || isBMP || isGIF || isPNG) && isLt2M;
             }
         },
         created(){
