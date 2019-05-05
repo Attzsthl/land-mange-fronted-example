@@ -20,6 +20,7 @@
     import vSidebar from './Sidebar.vue';
     import vTags from './Tags.vue';
     import bus from './bus';
+    import horizbar from './HorizBar.vue';
     export default {
         data(){
             return {
@@ -28,7 +29,7 @@
             }
         },
         components:{
-            vHead, vSidebar, vTags
+            vHead, vSidebar, vTags,horizbar
         },
         created(){
             bus.$on('collapse', msg => {

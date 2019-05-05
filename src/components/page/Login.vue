@@ -28,6 +28,7 @@
 </template>
 
 <script>
+import {setCookie,getCookie} from '../../assets/js/cookie';
 export default {
   data: function() {
     return {
@@ -56,7 +57,10 @@ export default {
               this.responseResult = JSON.stringify(successResponse.data);
               if (successResponse.data.code === 200) {
                 console.log("登陆信息" + successResponse.data.loginInfo.roleList);
-                localStorage.setItem("ms_username", this.ruleForm.username);
+               setCookie('roles',successResponse.data.loginInfo.roleList);
+                let roles = getCookie('roles');
+                console.log('cookie' + roles);
+               localStorage.setItem("ms_username", this.ruleForm.username);
                 localStorage.setItem("roles", successResponse.data.loginInfo.roleList);
                 localStorage.setItem("permissions", successResponse.data.loginInfo.permissionList);
                 this.$router.push("/");
@@ -100,7 +104,7 @@ export default {
   position: relative;
   width: 100%;
   height: 100%;
-  background-image: url(../../assets/img/login-bg.jpg);
+  background-image: url(../../assets/img/back.jpg);
   background-size: 100%;
 }
 .ms-title {
